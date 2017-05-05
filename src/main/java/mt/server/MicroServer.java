@@ -223,28 +223,31 @@ public class MicroServer implements MicroTraderServer {
 
 		// save the order on map
 
-		if (o.isSellOrder()) {
-			if (businessRule2(o)) {
+		if (o.getNumberOfUnits() >= 10) {
+			if (o.isSellOrder()) {
+				if (businessRule2(o)) {
+					saveOrder(o);
+					processSell(o);
+				} else
+					throw new ServerException("You can't have more than 5 Sell Active Orders at the same time");
+			}
+
+			// if is buy order
+			if (o.isBuyOrder()) {
 				saveOrder(o);
-				processSell(o);
-			}else System.out.println("Não pode ter mais de 5 Sell Orders em simultâneo");
-		} 
+				processBuy(o);
+			}
 
-		// if is buy order
-		if (o.isBuyOrder()) {
-			saveOrder(o);
-			processBuy(o);
-		}
+			// notify clients of changed order
+			notifyClientsOfChangedOrders();
 
-		// notify clients of changed order
-		notifyClientsOfChangedOrders();
+			// remove all fulfilled orders
+			removeFulfilledOrders();
 
-		// remove all fulfilled orders
-		removeFulfilledOrders();
-
-		// reset the set of changed orders
-		updatedOrders = new HashSet<>();
-
+			// reset the set of changed orders
+			updatedOrders = new HashSet<>();
+		} else
+			throw new ServerException("Your order quantity can't be lower than 10 units");
 	}
 
 	/**
