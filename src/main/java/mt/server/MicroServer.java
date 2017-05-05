@@ -220,6 +220,7 @@ public class MicroServer implements MicroTraderServer {
 		LOGGER.log(Level.INFO, "Processing new order...");
 
 		Order o = msg.getOrder();
+		//Business Rule 3
 		if(o.getNumberOfUnits()>=10){
 		if (o.isSellOrder()) {
 			if (BusinessRule2(o)) {
