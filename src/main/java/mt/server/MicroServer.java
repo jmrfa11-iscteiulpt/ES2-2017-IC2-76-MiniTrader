@@ -246,14 +246,19 @@ public class MicroServer implements MicroTraderServer {
 			if (o.isSellOrder()) {
 				if (businessRule2(o)) {
 					saveOrder(o);
+					functionalRequirement1(o, "Sell");
 					processSell(o);
 				} else
-					throw new ServerException("You can't have more than 5 Sell Active Orders at the same time");
+					serverComm.sendError(o.getNickname(),
+							"You can't have more than 5 Sell Active Orders at the same time");
+				// throw new ServerException("You can't have more than 5 Sell
+				// Active Orders at the same time");
 			}
 
 			// if is buy order
 			if (o.isBuyOrder()) {
 				saveOrder(o);
+				functionalRequirement1(o, "Buy");
 				processBuy(o);
 			}
 
@@ -340,18 +345,14 @@ public class MicroServer implements MicroTraderServer {
 
 		if (buyOrder.getNumberOfUnits() >= sellerOrder.getNumberOfUnits()) {
 			buyOrder.setNumberOfUnits(buyOrder.getNumberOfUnits() - sellerOrder.getNumberOfUnits());
-			functionalRequirement1(buyOrder, "Buy");
 			sellerOrder.setNumberOfUnits(EMPTY);
 		} else {
 			sellerOrder.setNumberOfUnits(sellerOrder.getNumberOfUnits() - buyOrder.getNumberOfUnits());
-			functionalRequirement1(buyOrder, "Buy");
 			buyOrder.setNumberOfUnits(EMPTY);
 		}
 
 		updatedOrders.add(buyOrder);
 		updatedOrders.add(sellerOrder);
-
-		
 
 	}
 
@@ -423,27 +424,6 @@ public class MicroServer implements MicroTraderServer {
 		return false;
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	public void functionalRequirement1(Order o, String type) {
 		try {
 			File inputFile = new File("MicroTraderPersistence.xml");

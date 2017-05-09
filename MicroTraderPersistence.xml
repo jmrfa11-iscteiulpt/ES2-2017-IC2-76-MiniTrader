@@ -3,4 +3,6 @@
 <Order Id="2" Price="3.0" Stock="coiso" Type="Buy" Units="0"/>
 <Order Id="2" Price="3.0" Stock="coiso" Type="Buy" Units="0"/>
 <Order Id="2" Price="3.0" Stock="coiso" Type="Buy" Units="13"/>
+<Order Id="1" Price="5.0" Stock="merdas" Type="Sell" Units="70"/>
+<Order Id="2" Price="4.0" Stock="merdasmerdas" Type="Sell" Units="150"/>
 </XML>
