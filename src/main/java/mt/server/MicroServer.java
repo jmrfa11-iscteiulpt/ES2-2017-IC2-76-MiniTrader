@@ -122,8 +122,18 @@ public class MicroServer implements MicroTraderServer {
 					if (msg.getOrder().getServerOrderID() == EMPTY) {
 						msg.getOrder().setServerOrderID(id++);
 					}
-					notifyAllClients(msg.getOrder());
-					processNewOrder(msg);
+					if (businessRule3(msg.getOrder())) {
+						if (msg.getOrder().isSellOrder()) {
+							if (businessRule2(msg.getOrder())) {
+								notifyAllClients(msg.getOrder());
+								processNewOrder(msg);
+							}
+						}
+						if (msg.getOrder().isBuyOrder()) {
+							notifyAllClients(msg.getOrder());
+							processNewOrder(msg);
+						}
+					}
 				} catch (ServerException e) {
 					serverComm.sendError(msg.getSenderNickname(), e.getMessage());
 				}
@@ -242,34 +252,27 @@ public class MicroServer implements MicroTraderServer {
 
 		// save the order on map
 
-		if (o.getNumberOfUnits() >= 10) {
-			if (o.isSellOrder()) {
-				if (businessRule2(o)) {
-					saveOrder(o);
-					functionalRequirement1(o, "Sell");
-					processSell(o);
-				} else
-					serverComm.sendError(o.getNickname(),
-							"You can't have more than 5 Sell Active Orders at the same time");
-			}
+		if (o.isSellOrder()) {
+			saveOrder(o);
+			functionalRequirement1(o, "Sell");
+			processSell(o);
+		}
 
-			// if is buy order
-			if (o.isBuyOrder()) {
-				saveOrder(o);
-				functionalRequirement1(o, "Buy");
-				processBuy(o);
-			}
+		// if is buy order
+		if (o.isBuyOrder()) {
+			saveOrder(o);
+			functionalRequirement1(o, "Buy");
+			processBuy(o);
+		}
 
-			// notify clients of changed order
-			notifyClientsOfChangedOrders();
+		// notify clients of changed order
+		notifyClientsOfChangedOrders();
 
-			// remove all fulfilled orders
-			removeFulfilledOrders();
+		// remove all fulfilled orders
+		removeFulfilledOrders();
 
-			// reset the set of changed orders
-			updatedOrders = new HashSet<>();
-		} else
-			throw new ServerException("Your order quantity can't be lower than 10 units");
+		// reset the set of changed orders
+		updatedOrders = new HashSet<>();
 	}
 
 	/**
@@ -415,11 +418,19 @@ public class MicroServer implements MicroTraderServer {
 				}
 			}
 			if (sum < 5) {
-				System.out.println("Entrei");
 				return true;
 			}
 		}
+		serverComm.sendError(o.getNickname(), "You can't have more than 5 Sell Orders active at the same time");
 		return false;
+	}
+
+	public boolean businessRule3(Order o) {
+		if (o.getNumberOfUnits() < 10) {
+			serverComm.sendError(o.getNickname(), "You can't place an Order with less than 10 units");
+			return false;
+		} else
+			return true;
 	}
 
 	public void functionalRequirement1(Order o, String type) {
