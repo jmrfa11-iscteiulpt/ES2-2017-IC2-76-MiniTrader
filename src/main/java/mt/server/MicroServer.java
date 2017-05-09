@@ -251,8 +251,6 @@ public class MicroServer implements MicroTraderServer {
 				} else
 					serverComm.sendError(o.getNickname(),
 							"You can't have more than 5 Sell Active Orders at the same time");
-				// throw new ServerException("You can't have more than 5 Sell
-				// Active Orders at the same time");
 			}
 
 			// if is buy order
