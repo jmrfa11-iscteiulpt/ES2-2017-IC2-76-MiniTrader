@@ -103,8 +103,19 @@ public class MicroServer implements MicroTraderServer {
 					if (msg.getOrder().getServerOrderID() == EMPTY) {
 						msg.getOrder().setServerOrderID(id++);
 					}
-					notifyAllClients(msg.getOrder());
-					processNewOrder(msg);
+					if(businessRule3(msg.getOrder())) {
+						if(msg.getOrder().isSellOrder()) {
+							if(BusinessRule2(msg.getOrder())){
+								notifyAllClients(msg.getOrder());
+								processNewOrder(msg);
+							}
+						}
+						if(msg.getOrder().isBuyOrder()) {
+							notifyAllClients(msg.getOrder());
+							processNewOrder(msg);
+						}
+					}
+					
 				} catch (ServerException e) {
 					serverComm.sendError(msg.getSenderNickname(), e.getMessage());
 				}
@@ -221,20 +232,16 @@ public class MicroServer implements MicroTraderServer {
 
 		Order o = msg.getOrder();
 		//Business Rule 3
-		if(o.getNumberOfUnits()>=10){
+		
 		if (o.isSellOrder()) {
-			if (BusinessRule2(o)) {
 				// save the order on map
-
 				saveOrder(o);
 				processSell(msg.getOrder());
 			}
-			else throw new ServerException("You can´t have more than 5 sell active orders at the same time");
-		}
+		
 
 		if (o.isBuyOrder()) {
 			// if is buy order
-
 			saveOrder(o);
 			processBuy(msg.getOrder());
 
@@ -248,8 +255,7 @@ public class MicroServer implements MicroTraderServer {
 
 		// reset the set of changed orders
 		updatedOrders = new HashSet<>();
-		}
-		else throw new ServerException("Your order quantity can´t be lower than 10 units");
+		
 	}
 
 	/**
@@ -300,9 +306,11 @@ public class MicroServer implements MicroTraderServer {
 		for (Entry<String, Set<Order>> entry : orderMap.entrySet()) {
 			for (Order o : entry.getValue()) {
 				if (o.isSellOrder() && buyOrder.getStock().equals(o.getStock())
-						&& o.getPricePerUnit() <= buyOrder.getPricePerUnit() && o.getNickname() != buyOrder.getNickname()) {
+						&& o.getPricePerUnit() <= buyOrder.getPricePerUnit() && !o.getNickname().equals(buyOrder.getNickname())) {
+					
 					doTransaction(buyOrder, o);
 				}
+				
 			}
 		}
 
@@ -401,5 +409,15 @@ public class MicroServer implements MicroTraderServer {
 		}
 		return false;
 	}
+	
+	
+	public boolean businessRule3(Order o) {
+		if (o.getNumberOfUnits() < 10) {
+			serverComm.sendError(o.getNickname(), "You can't place an Order with less than 10 units");
+			return false;
+		} else
+			return true;
+	}
+
 
 }
