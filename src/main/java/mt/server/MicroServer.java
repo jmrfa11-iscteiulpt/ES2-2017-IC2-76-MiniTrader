@@ -250,14 +250,14 @@ public class MicroServer implements MicroTraderServer {
 		// if is buy order
 		if (o.isBuyOrder()) {
 			saveOrder(o);
-			functionalRequirement1(o, "Buy");
+			functionalRequirement2(o, "Buy");
 			processBuy(o);
 		}
 
 		// if is sell order
 		if (o.isSellOrder()) {
 			saveOrder(o);
-			functionalRequirement1(o, "Sell");
+			functionalRequirement2(o, "Sell");
 			processSell(o);
 		}
 
@@ -404,7 +404,7 @@ public class MicroServer implements MicroTraderServer {
 		}
 	}
 
-	public void functionalRequirement1(Order o, String type) {
+	public void functionalRequirement2(Order o, String type) {
 		try {
 			File inputFile = new File("MicroTraderPersistence.xml");
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
