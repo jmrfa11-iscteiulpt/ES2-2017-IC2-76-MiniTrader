@@ -47,7 +47,7 @@ public class MicroServer implements MicroTraderServer {
 	 */
 	private Map<String, Set<Order>> orderMap;
 
-	/**
+	/**se
 	 * Orders that we must track in order to notify clients
 	 */
 	private Set<Order> updatedOrders;
@@ -394,17 +394,17 @@ public class MicroServer implements MicroTraderServer {
 
 	public boolean BusinessRule2(Order o) {
 		if (o.isSellOrder()) {
-			int sum = 0;
+			int sumOfSellOrders = 0;
 			for (Entry<String, Set<Order>> entry : orderMap.entrySet()) {
 				if (entry.getKey().equals(o.getNickname())) {
 					for (Order o1 : entry.getValue()) {
 						if (o1.isSellOrder())
-							sum++;
+							sumOfSellOrders++;
 					}
 				}
 
 			}
-			if (sum < 5)
+			if (sumOfSellOrders < 5)
 				return true;
 		}
 		return false;
