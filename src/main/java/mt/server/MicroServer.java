@@ -407,13 +407,14 @@ public class MicroServer implements MicroTraderServer {
 			if (sumOfSellOrders < 5)
 				return true;
 		}
+		System.out.println("You can't have more than 5 Sell Orders active at the same time");
 		return false;
 	}
 	
 	
 	public boolean businessRule3(Order o) {
 		if (o.getNumberOfUnits() < 10) {
-			serverComm.sendError(o.getNickname(), "You can't place an Order with less than 10 units");
+			System.out.println("You can't place an Order with less than 10 units");
 			return false;
 		} else
 			return true;
