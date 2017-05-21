@@ -477,7 +477,7 @@ public class MicroServer implements MicroTraderServer {
 
 	public boolean businessRule3(Order o) {
 		if (o.getNumberOfUnits() < 10) {
-			serverComm.sendError(o.getNickname(), "You can't place an Order with less than 10 units");
+			System.out.println("You can't place an Order with less than 10 units");
 			return false;
 		} else
 			return true;
