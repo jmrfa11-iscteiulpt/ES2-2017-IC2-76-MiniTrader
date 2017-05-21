@@ -1370,7 +1370,7 @@ src/main/java/mt/filter/ClientMessagesTimer.java:10:	publicMethodCommentRequirem
 src/main/java/mt/filter/ClientMessagesTimer.java:16:	publicMethodCommentRequirement Required
 src/main/java/mt/filter/ClientMessagesTimer.java:21:	publicMethodCommentRequirement Required
 src/main/java/mt/server/MicroServer.java:1:	A high number of imports can indicate a high degree of coupling within an object.
-src/main/java/mt/server/MicroServer.java:1:	Possible God class (WMC=68, ATFD=90, TCC=0.032679738562091505)
+src/main/java/mt/server/MicroServer.java:1:	Possible God class (WMC=68, ATFD=88, TCC=0.032679738562091505)
 src/main/java/mt/server/MicroServer.java:49:	The class 'MicroServer' has a Cyclomatic Complexity of 4 (Highest = 13).
 src/main/java/mt/server/MicroServer.java:49:	The class 'MicroServer' has a Modified Cyclomatic Complexity of 4 (Highest = 11).
 src/main/java/mt/server/MicroServer.java:49:	The class 'MicroServer' has a Standard Cyclomatic Complexity of 4 (Highest = 13).
@@ -1502,10 +1502,12 @@ src/main/java/mt/server/MicroServer.java:416:	Avoid using if statements without 
 src/main/java/mt/server/MicroServer.java:417:	Found 'DD'-anomaly for variable 'sum' (lines '417'-'417').
 src/main/java/mt/server/MicroServer.java:420:	Avoid using Literals in Conditional Statements
 src/main/java/mt/server/MicroServer.java:421:	A method should have only one exit point, and that should be the last statement in the method
+src/main/java/mt/server/MicroServer.java:424:	System.out.println is used
 src/main/java/mt/server/MicroServer.java:428:	Avoid variables with short names like o
 src/main/java/mt/server/MicroServer.java:428:	Parameter 'o' is not assigned and could be declared final
 src/main/java/mt/server/MicroServer.java:428:	publicMethodCommentRequirement Required
 src/main/java/mt/server/MicroServer.java:429:	Avoid using Literals in Conditional Statements
+src/main/java/mt/server/MicroServer.java:430:	System.out.println is used
 src/main/java/mt/server/MicroServer.java:431:	A method should have only one exit point, and that should be the last statement in the method
 src/main/java/mt/server/MicroServer.java:433:	Avoid using if...else statements without curly braces
 src/main/java/mt/server/MicroServer.java:436:	Avoid variables with short names like o
