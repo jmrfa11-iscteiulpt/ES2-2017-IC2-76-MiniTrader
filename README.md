@@ -10,4 +10,4 @@ We implemented all business rules and functional requirements
 
 68513, Duarte Farinas, drsfa1@iscte-iul.pt
 
-número estudante 3, Nadir Rassid, email estudante 3 (iscte)
+68723, Nadir Rassid, nardf@iscte-iul.pt
